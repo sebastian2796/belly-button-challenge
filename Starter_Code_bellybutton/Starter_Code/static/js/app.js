@@ -1,7 +1,8 @@
 // Build the metadata panel
-function buildMetadata(sample) {
+function buildDemoInfo(subjectID) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
-
+    console.log(data);
+    console.log("buildDemoInfo");
     // get the metadata field
 
 
@@ -21,9 +22,10 @@ function buildMetadata(sample) {
 }
 
 // function to build both charts
-function buildCharts(sample) {
+function buildCharts(subjectID) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
-
+    console.log(subjectID);
+    console.log("buildCharts");
     // Get the samples field
 
 
@@ -51,34 +53,37 @@ function buildCharts(sample) {
   });
 }
 
+
+// Function for event listener
+function personChanged(subjectID) {
+  // Build charts and metadata panel each time a new sample is selected
+  buildDemoInfo(subjectID);
+  buildCharts(subjectID);
+}
+
+
 // Function to run on page load
 function init() {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
-
     // Get the names field
-
+    let allIDs = data.names;
 
     // Use d3 to select the dropdown with id of `#selDataset`
-
-
+    let dropdown = d3.select("#selDataset");
     // Use the list of sample names to populate the select options
     // Hint: Inside a loop, you will need to use d3 to append a new
     // option for each sample name.
-
+    allIDs.forEach(id => {
+      dropdown.append("option").attr("value", id).text(id);
+    });
 
     // Get the first sample from the list
-
-
     // Build charts and metadata panel with the first sample
-
+    personChanged(allIDs[0]);
   });
 }
 
-// Function for event listener
-function optionChanged(newSample) {
-  // Build charts and metadata panel each time a new sample is selected
 
-}
 
 // Initialize the dashboard
 init();
